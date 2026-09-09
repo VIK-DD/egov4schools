@@ -1,0 +1,86 @@
+/*
+ * App-level layout only.
+ *
+ * MUD owns the visual language: colour, type scale, spacing and component
+ * appearance all come from the imported token stylesheets. Per the AGE rules
+ * we do not redefine primary colours, spacing tokens, the type scale or
+ * component dimensions here — we only compose layout around them.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Onest', system-ui, sans-serif;
+  color: var(--color-text-base-default);
+  background: var(--color-background-base-default);
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.masthead {
+  max-width: 34rem;
+}
+
+.masthead h1 {
+  font-size: clamp(1.875rem, 1.2rem + 2.4vw, 3rem);
+  line-height: 1.1;
+  margin: 0 0 0.75rem;
+}
+
+.masthead p {
+  margin: 0;
+  color: var(--color-text-base-secondary);
+  line-height: 1.6;
+}
+
+.search-row {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.search-row mud-search-input-rectangular {
+  flex: 1 1 22rem;
+}
+
+.result-note {
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--color-border-base-subtle);
+  border-radius: 0.5rem;
+  background: var(--color-background-base-secondary);
+  color: var(--color-text-base-secondary);
+  line-height: 1.6;
+}
+
+.result-note code {
+  color: var(--color-text-base-default);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

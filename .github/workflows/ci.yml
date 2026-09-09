@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Fails if the generated MUD JSX types are stale relative to the
+      # installed @egov-moldova/mud version.
+      - name: Check MUD types are current
+        run: |
+          npm run mud:types
+          git diff --exit-code src/types/mud-jsx.d.ts
+
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run build

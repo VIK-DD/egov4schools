@@ -1,0 +1,23 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Editor
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Env
+.env
+.env.*
+!.env.example
+*.tsbuildinfo

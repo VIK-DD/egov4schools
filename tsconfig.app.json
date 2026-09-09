@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["vite/client"],
+    // The package's "exports" map does not expose dist/types, but that file is
+    // where the HTMLMud*Element global interfaces live. Map it explicitly.
+    "paths": {
+      "@egov-moldova/mud/components": [
+        "./node_modules/@egov-moldova/mud/dist/types/components.d.ts"
+      ]
+    }
+  },
+  "include": ["src"]
+}
