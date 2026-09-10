@@ -4,8 +4,10 @@
  * exists. The UI labels every page as demonstrative.
  */
 
-export type DocType = 'ordin' | 'circulara' | 'ghid' | 'regulament' | 'plan';
-export type DocCategory = 'bac' | 'curriculum' | 'evaluare' | 'management' | 'incluziune';
+// Same unions the API uses, so sample and real documents share one vocabulary.
+import type { DocCategory, DocType } from '../../shared/api';
+
+export type { DocCategory, DocType };
 
 export const DOC_TYPES: readonly DocType[] = ['ordin', 'circulara', 'ghid', 'regulament', 'plan'];
 export const DOC_CATEGORIES: readonly DocCategory[] = [

@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: egov
+      POSTGRES_PASSWORD: egov
+      POSTGRES_DB: egov4schools
+    ports:
+      # 5433 on the host so it never collides with a locally installed Postgres.
+      - '5433:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U egov -d egov4schools']
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:
