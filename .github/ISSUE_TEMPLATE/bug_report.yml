@@ -1,0 +1,40 @@
+name: Raportează o eroare
+description: Ceva nu funcționează cum ar trebui.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: Ce s-a întâmplat?
+      description: Descrie problema și ce te așteptai să se întâmple.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pași de reproducere
+      placeholder: |
+        1. Deschide pagina …
+        2. Apasă pe …
+        3. Observă …
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Pagina (URL)
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options: [Chrome, Firefox, Safari, Edge, Altul]
+  - type: dropdown
+    id: theme
+    attributes:
+      label: Mod de afișare
+      options: [Luminos, Întunecat]
+  - type: dropdown
+    id: lang
+    attributes:
+      label: Limba interfeței
+      options: [Română, Rusă]
