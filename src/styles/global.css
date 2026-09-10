@@ -1,79 +1,214 @@
 /*
- * App-level layout only.
+ * Tailwind v4 on top of MUD.
  *
- * MUD owns the visual language: colour, type scale, spacing and component
- * appearance all come from the imported token stylesheets. Per the AGE rules
- * we do not redefine primary colours, spacing tokens, the type scale or
- * component dimensions here — we only compose layout around them.
+ * MUD owns the visual language: colour, type scale and component appearance
+ * come from its token stylesheets (imported in src/lib/mud.ts). Per the AGE
+ * rules we do not redefine primary colours, spacing tokens, the type scale or
+ * component dimensions. Tailwind is loaded WITHOUT preflight so it cannot reset
+ * MUD components, and its theme only aliases MUD variables - utilities like
+ * `bg-surface`, `text-ink-2` or `text-sm` therefore follow MUD's tokens in both
+ * light and dark mode.
+ *
+ * What we add ourselves (allowed: accents, layout, new components):
+ * glass surfaces, chart colours, a positive-delta accent, background blobs.
  */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+/* MUD switches palettes with :root[data-theme="dark"]; so does `dark:`. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+@theme inline {
+  --font-sans: var(--font-family-primary), 'Onest', system-ui, sans-serif;
+
+  /* Type scale = MUD's font-size tokens. */
+  --text-2xs: var(--font-size-10);
+  --text-xs: var(--font-size-12);
+  --text-sm: var(--font-size-14);
+  --text-base: var(--font-size-16);
+  --text-lg: var(--font-size-18);
+  --text-xl: var(--font-size-20);
+  --text-2xl: var(--font-size-24);
+  --text-3xl: var(--font-size-32);
+  --text-4xl: var(--font-size-40);
+
+  --color-surface: var(--color-background-base-default);
+  --color-surface-2: var(--color-background-base-secondary);
+  --color-surface-3: var(--color-background-base-tertiary);
+  --color-ink: var(--color-text-base-default);
+  --color-ink-2: var(--color-text-base-secondary);
+  --color-ink-3: var(--color-text-base-tertiary);
+  --color-line: var(--color-border-base-subtle);
+  --color-line-strong: var(--color-border-base-default);
+  --color-brand: var(--color-background-brand-default);
+  --color-brand-hover: var(--color-background-brand-default-hover);
+  --color-brand-soft: var(--color-background-brand-secondary);
+  --color-brand-ink: var(--color-text-brand-default);
+  --color-danger-ink: var(--color-text-danger-default);
+  --color-warn-soft: var(--color-background-warning-secondary);
+  --color-warn-ink: var(--color-text-warning-on-secondary);
+  --color-positive: var(--positive);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
 }
 
-body {
-  margin: 0;
-  font-family: 'Onest', system-ui, sans-serif;
-  color: var(--color-text-base-default);
-  background: var(--color-background-base-default);
+:root {
+  /* Chart palette - validated with the dataviz validator (light + dark). */
+  --chart-1: #0058d2;
+  --chart-2: #b86e00;
+  /* MUD ships no success token; this accent is only ever paired with ▲ + text. */
+  --positive: #1a7f37;
+
+  --glass-bg: rgb(255 255 255 / 0.58);
+  --glass-border: rgb(255 255 255 / 0.8);
+  --glass-shadow: 0 10px 32px rgb(0 40 120 / 0.08);
+  --blob-1: #7fb0ff;
+  --blob-2: #ffd66b;
+  --blob-3: #a6c8ff;
+  --blob-opacity: 0.45;
 }
 
-.app-shell {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+:root[data-theme='dark'] {
+  --chart-1: #3b7ae8;
+  --chart-2: #bd7d1a;
+  --positive: #4cc26a;
+
+  --glass-bg: rgb(40 40 40 / 0.55);
+  --glass-border: rgb(255 255 255 / 0.09);
+  --glass-shadow: 0 10px 32px rgb(0 0 0 / 0.35);
+  --blob-1: #1d4ed8;
+  --blob-2: #a16207;
+  --blob-3: #1e3a8a;
+  --blob-opacity: 0.22;
 }
 
-.app-main {
-  flex: 1;
-  width: 100%;
-  max-width: 72rem;
-  margin-inline: auto;
-  padding: 3rem 1.5rem 5rem;
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    color-scheme: light;
+  }
+
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-surface-2);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  figure,
+  dl,
+  dd,
+  ol,
+  ul {
+    margin: 0;
+  }
+
+  ol,
+  ul {
+    padding: 0;
+    list-style: none;
+  }
+
+  button,
+  input,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+
+  button {
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-background-brand-focus-ring, var(--color-brand));
+    outline-offset: 2px;
+  }
 }
 
-.masthead {
-  max-width: 34rem;
+@layer components {
+  /* Glass: nav, stat cards, chart panels, filter rails, modals. */
+  .glass {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* Solid: tables, lists and anything read closely. */
+  .panel {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+  }
+
+  .field {
+    appearance: none;
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.5rem 2.25rem 0.5rem 0.75rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: 0.5rem;
+    background-color: var(--color-surface);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    font-size: var(--font-size-14);
+  }
+
+  .field[type='search'] {
+    background-image: none;
+    padding-right: 0.75rem;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+    opacity: var(--blob-opacity);
+  }
 }
 
-.masthead h1 {
-  font-size: clamp(1.875rem, 1.2rem + 2.4vw, 3rem);
-  line-height: 1.1;
-  margin: 0 0 0.75rem;
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: var(--color-surface);
+  }
 }
 
-.masthead p {
-  margin: 0;
-  color: var(--color-text-base-secondary);
-  line-height: 1.6;
-}
-
-.search-row {
-  margin-top: 2.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.search-row mud-search-input-rectangular {
-  flex: 1 1 22rem;
-}
-
-.result-note {
-  margin-top: 1.5rem;
-  padding: 1rem 1.25rem;
-  border: 1px solid var(--color-border-base-subtle);
-  border-radius: 0.5rem;
-  background: var(--color-background-base-secondary);
-  color: var(--color-text-base-secondary);
-  line-height: 1.6;
-}
-
-.result-note code {
-  color: var(--color-text-base-default);
+@media (prefers-reduced-transparency: reduce) {
+  .glass {
+    background: var(--color-surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

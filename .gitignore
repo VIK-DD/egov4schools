@@ -21,3 +21,6 @@ yarn-error.log*
 .env.*
 !.env.example
 *.tsbuildinfo
+
+# Brainstorming mockups (superpowers visual companion)
+.superpowers/

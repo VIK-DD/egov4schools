@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Raportează o vulnerabilitate
+    url: https://github.com/VIK-DD/egov4schools/security/advisories/new
+    about: Problemele de securitate se raportează privat, nu printr-un issue public.

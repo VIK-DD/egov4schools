@@ -1,0 +1,20 @@
+name: Propune o funcționalitate
+description: O idee nouă pentru platformă.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Ce problemă rezolvă?
+      description: Cine are nevoie de asta și de ce.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Soluția propusă
+  - type: dropdown
+    id: area
+    attributes:
+      label: Zona
+      options: [Panou, Statistici, Documente MEC, Școli, Administrare, Altceva]
